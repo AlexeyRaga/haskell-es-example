@@ -20,6 +20,7 @@ library
   build-depends:       base >= 4.7 && < 5
                      , bytestring >= 0.10.6
                      , text >= 1.2.1
+                     , containers >= 0.5.6
                      , aeson
                      , eventstore >= 0.8
                      , protobuf >= 0.2.1
@@ -35,6 +36,7 @@ executable haskell-es-exe
                      , haskell-es
                      , bytestring >= 0.10.6
                      , text >= 1.2.1
+                     , containers >= 0.5.6
                      , aeson
                      , eventstore >= 0.8
                      , protobuf >= 0.2.1
