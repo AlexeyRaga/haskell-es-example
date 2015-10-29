@@ -2,11 +2,6 @@
 
 module Aggregate where
 
-data EventData e = EventData {
-    eventId :: Int,
-    body :: Event e
-}
-
 class Aggregate s where
     data Error s   :: *
     data Command s :: *
@@ -19,10 +14,8 @@ class Aggregate s where
 handle :: (Aggregate a) => a -> Command a -> Either (Error a) ((a, Event a))
 handle a cmd = (\e -> (apply a e, e)) <$> execute a cmd
 
-load :: (Aggregate a) => [EventData a] -> a
-load = foldl folder new
-    where
-        folder state = apply state . body
+load :: (Aggregate a) => [Event a] -> a
+load = foldl apply new
 
 validate :: (a -> Bool) -> e -> a -> Either e a
 validate f err x
