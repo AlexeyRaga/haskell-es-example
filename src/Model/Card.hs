@@ -5,7 +5,7 @@
 {-# LANGUAGE FlexibleInstances  #-}
 
 module Model.Card (
-  Card, CardItem, ProductId(..), Quantity,
+  CardId (..), Card, CardItem, ProductId(..), Quantity,
   Error, Command(..), Event(..),
 ) where
 
@@ -17,8 +17,8 @@ import Data.Text (Text)
 import GHC.Generics
 
 ---------------------------- model ------------------------------------
-newtype CardId    = CardId Text    deriving (Generic, Eq, Show, Data, ToJSON, FromJSON)
-newtype ProductId = ProductId Text deriving (Generic, Eq, Show, Data, ToJSON, FromJSON)
+newtype CardId    = CardId Text    deriving (Generic, Eq, Show, Data, ToJSON, FromJSON, Read)
+newtype ProductId = ProductId Text deriving (Generic, Eq, Show, Data, ToJSON, FromJSON, Read)
 type    Quantity  = Int
 
 data Card =
@@ -36,6 +36,7 @@ instance Aggregate Card where
   data Command Card = AddProduct ProductId
                     | RemoveProduct ProductId
                     | ClearCard
+                    deriving (Show, Read)
 
   data Event Card = ProductAdded { addedProductId :: ProductId }
                   | ProductRemoved { removedProductId :: ProductId }
