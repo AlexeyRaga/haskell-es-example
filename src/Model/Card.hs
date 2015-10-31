@@ -68,7 +68,7 @@ existsInCard c p = any (hasId p) (products c)
 
 withinLimit :: Card -> Quantity -> ProductId -> Bool
 withinLimit c num p =
-   not $ any (\x -> productId x == p && quantity x >= num) (products c)
+  not $ any (\x -> productId x == p && quantity x >= num) (products c)
 
 ---------------------------- helpers ----------------------------------
 updateQuantity :: (Int -> Int) -> CardItem -> CardItem

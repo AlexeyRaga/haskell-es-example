@@ -10,9 +10,9 @@ import Aggregate as A
 import Data.Data
 
 readAllEvents :: (Aggregate a, FromJSON (A.Event a), AggregateId (A.Id a)) =>
-    Connection
-    -> A.Id a
-    -> IO a
+  Connection
+  -> A.Id a
+  -> IO a
 readAllEvents conn aid  =
   readPortion (new aid)
   where
@@ -31,11 +31,11 @@ readAllEvents conn aid  =
       apply a <$> (resolvedEventOriginal e >>= decode . fromStrict . recordedEventData)
 
 writeAllEvents :: (Data (A.Event a), ToJSON (A.Event a), AggregateId (A.Id a)) =>
-    Connection
-    -> A.Id a
-    -> [A.Event a]
-    -> IO WriteResult
+  Connection
+  -> A.Id a
+  -> [A.Event a]
+  -> IO WriteResult
 writeAllEvents conn aid es =
-    let packEvent e = createEvent (pack . show $ toConstr e) Nothing (withJson $ toJSON e)
-        stream = textAggregateId aid
-    in  sendEvents conn stream anyStream (packEvent <$> es) >>= wait
+  let packEvent e = createEvent (pack . show $ toConstr e) Nothing (withJson $ toJSON e)
+      stream = textAggregateId aid
+  in  sendEvents conn stream anyStream (packEvent <$> es) >>= wait
