@@ -10,25 +10,28 @@ module Model.Card (
 ) where
 
 import Aggregate
-import Control.Monad
 import Data.Aeson
 import Data.Data
 import Data.List
 import Data.Text (Text)
 import GHC.Generics
 
-data Card = Card { products :: [CardItem] }
-            deriving (Show, Data)
+---------------------------- model ------------------------------------
+newtype CardId    = CardId Text    deriving (Generic, Eq, Show, Data, ToJSON, FromJSON)
+newtype ProductId = ProductId Text deriving (Generic, Eq, Show, Data, ToJSON, FromJSON)
+type    Quantity  = Int
 
-data CardItem = CardItem { productId :: ProductId, quantity :: Quantity }
-                deriving (Generic, Show, Data)
+data Card =
+  Card { cardId :: CardId, products :: [CardItem] }
+  deriving (Show, Data)
 
-newtype ProductId = ProductId Text deriving (Eq, Show, Data)
+data CardItem =
+  CardItem { productId :: ProductId, quantity :: Quantity }
+  deriving (Generic, Show, Data)
 
-type Quantity = Int
-
--------------------------- aggregate ---------------------------------
+--------------------------- aggregate ---------------------------------
 instance Aggregate Card where
+  type Id Card = CardId
 
   data Command Card = AddProduct ProductId
                     | RemoveProduct ProductId
@@ -43,6 +46,8 @@ instance Aggregate Card where
                   | QuantityExceedsLimit ProductId Quantity
                   deriving (Show)
 
+  aggregateId = cardId
+
   s `execute` AddProduct p = ProductAdded
     <$> validate (withinLimit s 2) (QuantityExceedsLimit p 2) p
 
@@ -55,7 +60,7 @@ instance Aggregate Card where
   s `apply` ProductRemoved p = removeProduct s p
   s `apply` CardCleared = s { products = [] }
 
-  new = Card []
+  new aid = Card aid []
 
 -------------------------- validation ---------------------------------
 existsInCard :: Card -> ProductId -> Bool
@@ -92,12 +97,3 @@ addOrUpdate f update create lst =
 updateWhere :: (a -> Bool) -> (a -> a) -> [a] -> [a]
 updateWhere f upd lst =
   (\x -> if f x then upd x else x) <$> lst
-
------------------------------ instances -------------------------------
-instance FromJSON ProductId where
-    parseJSON (String value) = return $ ProductId value
-    parseJSON _ = mzero
-
-instance ToJSON ProductId where
-    toJSON (ProductId value) = String value
-
