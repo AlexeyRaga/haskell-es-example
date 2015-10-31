@@ -18,13 +18,12 @@ emptyCard = new cardId :: Card
 main :: IO ()
 main = do
   --conn <- ES.connect defaultSettings "localhost" 1113
-  print "Enter your commands here:"
+  putStrLn "Enter your commands here:"
   go emptyCard
   where
-    go :: Card -> IO ()
     go card = do
       line <- getLine
-      if line == "exit" then print "Bye." 
+      if line == "exit" then putStrLn "Bye." 
       else do
         nextCard <- case readMaybe line of
                       Just cmd -> exec card cmd
@@ -34,5 +33,5 @@ main = do
 exec :: Card -> Command Card -> IO Card
 exec card cmd =
   case handle card cmd of
-    Left err -> const card <$> (print $ "Error: " ++ show err)
-    Right (c, e) -> const c <$> (print $ show e)
+    Left err           -> (putStrLn $ "Error: " ++ show err) >> return card
+    Right (newCard, e) -> (putStrLn $ show e)                >> return newCard
