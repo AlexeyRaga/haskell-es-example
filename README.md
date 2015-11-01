@@ -5,7 +5,7 @@ An example of DDD + EventSourcing in Haskell.
 ### To run the example
 
 - Download and run the EventStore (https://geteventstore.com/)
--- Navigate to http://127.0.0.1:2113/ (default credentials are `admin/changeit`) to ensure you have ES running
+  - Navigate to http://127.0.0.1:2113/ (default credentials are `admin/changeit`) to ensure you have ES running
 - `git clone https://github.com/AlexeyRaga/haskell-es-example.git`
 - `cd haskell-es-example`
 - `stack build`
