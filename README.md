@@ -27,6 +27,29 @@ The commands type derives `Read` (for example purposes only) so it can be used i
 Enter `exit` to leave the session.
 Enter `expose` to show the current card state.
 
+A session could look like:
+
+    Your current card is:
+    Card {cardId = CardId "test-card-1", products = []}
+
+    Enter your commands here:
+    AddProduct (ProductId "prod-1")
+    --> ProductAdded {addedProductId = ProductId "prod-1"}
+    AddProduct (ProductId "prod-2")
+    --> ProductAdded {addedProductId = ProductId "prod-2"}
+    AddProduct (ProductId "prod-1")
+    --> ProductAdded {addedProductId = ProductId "prod-1"}
+    AddProduct (ProductId "prod-1")
+    --! QuantityExceedsLimit (ProductId "prod-1") 2
+    RemoveProduct (ProductId "prod-1")
+    --> ProductRemoved {removedProductId = ProductId "prod-1"}
+    RemoveProduct (ProductId "prod-3")
+    --! NoProductInCard (ProductId "prod-3")
+    expose
+    Card {cardId = CardId "test-card-1", products = [CardItem {productId = ProductId "prod-1", quantity = 1},CardItem {productId = ProductId "prod-2", quantity = 1}]}
+    exit
+    Bye.
+
 Because all the events are stored in the EventStore the state of the aggregate will be restored (by replaying all the stored events).
 
 Go to the "Stream Browser" menu of the EventStore UI (http://127.0.0.1:2113/web/index.html#/streams) to see the streams. This example uses `test-card-1` stream. Navigating to this stream will show all the history of the aggregate (all the events), which is one of the biggest points.
