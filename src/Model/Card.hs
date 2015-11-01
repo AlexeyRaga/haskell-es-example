@@ -29,6 +29,9 @@ data CardItem =
   CardItem { productId :: ProductId, quantity :: Quantity }
   deriving (Generic, Show, Data)
 
+instance AggregateId CardId where
+  textAggregateId (CardId cid) = cid
+
 --------------------------- aggregate ---------------------------------
 instance Aggregate Card where
   type Id Card = CardId
