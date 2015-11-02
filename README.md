@@ -50,6 +50,6 @@ A session could look like:
     exit
     Bye.
 
-Because all the events are stored in the EventStore the state of the aggregate will be restored (by replaying all the stored events).
+All the events are stored in the EventStore therefore the state of the aggregate is persisted between runs.
 
 Go to the "Stream Browser" menu of the EventStore UI (http://127.0.0.1:2113/web/index.html#/streams) to see the streams. This example uses `test-card-1` stream. Navigating to this stream will show all the history of the aggregate (all the events), which is one of the biggest points.
