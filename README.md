@@ -2,6 +2,12 @@
 
 An example of DDD + EventSourcing in Haskell.
 
+The "main" modules of this example are:
+
+- [Aggregate](src/Aggregate.hs) - the Aggregate class
+- [Card](src/Model/Card.hs) - the model that represents a simple shopping card which has an `Aggregate` instance
+- [Repository](src/Repository.hs) - a simple event sourcing repository that works for any `Aggregate` and uses the EventStore.
+
 ### To run the example
 
 - Download and run the EventStore (https://geteventstore.com/)
