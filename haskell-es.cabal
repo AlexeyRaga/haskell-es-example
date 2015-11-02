@@ -16,7 +16,7 @@ cabal-version:       >=1.10
 library
   hs-source-dirs:      src
   ghc-options:         -Wall
-  exposed-modules:     Lib, Aggregate, Repository, Model.Card
+  exposed-modules:     Aggregate, Repository, Model.Card
   build-depends:       base >= 4.7 && < 5
                      , bytestring >= 0.10.6
                      , text >= 1.2.1
